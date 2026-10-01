@@ -7,18 +7,18 @@ export default function ReleaseExplorer() {
   useEffect(() => {
     async function fetchReleases() {
       try {
-        const res = await fetch('https://api.github.com/repos/zubbledew6/genix/releases', {
+        const res = await fetch('https://api.github.com/repos/Kenraaliskuutteri/Kenraaliskuutteri/releases', {
           headers: { 'Accept': 'application/vnd.github.v3+json' }
         });
+        if (!res.ok) throw new Error(res.status);
         const data = await res.json();
-        setReleases(Array.isArray(data) && data.length > 0 ? data : []);
+        setReleases(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Fetch error:', err);
       } finally {
         setLoading(false);
       }
     }
-
     fetchReleases();
   }, []);
 
@@ -34,10 +34,9 @@ export default function ReleaseExplorer() {
     'div',
     { style: { maxWidth: '900px', margin: '0 auto', width: '100%' } },
     releases.map((rel) => {
-      // Check if the release is experimental based on its name or tag, cause for some reason it doesn't always set the prerelease flag correctly
       const title = (rel.name || '').toLowerCase();
       const tag = (rel.tag_name || '').toLowerCase();
-      const isExperimental = rel.prerelease || title.includes('experimental') || tag.includes('experimental');
+      const isExperimental = rel.prerelease || title.includes('experi') || tag.includes('experi') || tag.includes('unstab') || title.includes('unstab');
 
       return React.createElement(
         'div',
