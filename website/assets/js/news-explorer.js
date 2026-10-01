@@ -53,6 +53,14 @@ const renderItem = (item) => {
   `;
 };
 
+const parseDmy = (str) => {
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(str.trim());
+  if (!m) return "";
+  const d = new Date(+m[3], +m[2] - 1, +m[1]);
+  if (d.getFullYear() !== +m[3] || d.getMonth() !== +m[2] - 1 || d.getDate() !== +m[1]) return "";
+  return m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0");
+};
+
 let allItems = [];
 
 const matches = (item, terms, from, to) => {
@@ -71,8 +79,8 @@ function applyFilters() {
   const status = document.getElementById("news-status");
   const list = document.getElementById("news-list");
   const terms = document.getElementById("filter-keyword").value.toLowerCase().split(/\s+/).filter(Boolean);
-  const from = document.getElementById("filter-from").value;
-  const to = document.getElementById("filter-to").value;
+  const from = parseDmy(document.getElementById("filter-from").value);
+  const to = parseDmy(document.getElementById("filter-to").value);
   const active = terms.length > 0 || from || to;
 
   const items = allItems.filter(item => matches(item, terms, from, to));
@@ -112,8 +120,8 @@ async function loadNews() {
 }
 
 document.getElementById("filter-keyword").addEventListener("input", applyFilters);
-document.getElementById("filter-from").addEventListener("change", applyFilters);
-document.getElementById("filter-to").addEventListener("change", applyFilters);
+document.getElementById("filter-from").addEventListener("input", applyFilters);
+document.getElementById("filter-to").addEventListener("input", applyFilters);
 document.getElementById("filter-clear").addEventListener("click", clearFilters);
 
 loadNews();
