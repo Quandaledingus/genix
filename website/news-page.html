@@ -52,6 +52,19 @@
       <h2>News</h2>
       <p>Updates, announcements and notes from the Genix project.</p>
 
+      <div class="news-filters">
+        <label>Explore posts
+          <input type="search" id="filter-keyword" placeholder="Search titles">
+        </label>
+        <label>From
+          <input type="date" id="filter-from">
+        </label>
+        <label>To
+          <input type="date" id="filter-to">
+        </label>
+        <button type="button" id="filter-clear" class="secondary-button">Clear</button>
+      </div>
+
       <div id="news-status" class="news-status" role="status" aria-live="polite">Loading…</div>
       <div id="news-list" class="news-list"></div>
     </section>
