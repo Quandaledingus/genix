@@ -764,3 +764,38 @@ footer {
 .news-filters button {
   cursor: pointer;
 }
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.wallpaper-card {
+  margin: 0;
+  background: #121212;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wallpaper-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.wallpaper-card figcaption {
+  padding: 10px 14px;
+  color: #d7dfe8;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wallpaper-credit {
+  color: #9fb2c6;
+  font-size: 0.8rem;
+}
