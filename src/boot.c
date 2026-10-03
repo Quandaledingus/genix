@@ -234,6 +234,7 @@ delete_snapshot(int gen_id, const BootCfg *bc)
 {
 	char name[128], path[256];
 	const char *btrfs;
+	int rc;
 
 	if (!bc->enabled || !is_btrfs_root())
 		return 1;
@@ -245,9 +246,16 @@ delete_snapshot(int gen_id, const BootCfg *bc)
 	subvol_name(bc->subvol_prefix, gen_id, name, sizeof name);
 	if (!btrfs_subvol_exists(name))
 		return 1;
-	snprintf(path, sizeof path, "/%s", name);
-	printf("boot: delete subvolume %s\n", name);
-	return cmd(0, 0, btrfs, "subvolume", "delete", path, NULL) == 0;
+	/* snapshots sit next to @ in the tree root, not under / */
+	if (!mount_btrfs_top()) {
+		printf("boot: could not mount btrfs tree root\n");
+		return 0;
+	}
+	snprintf(path, sizeof path, "%s/%s", BTRFS_TOP, name);
+	printf("boot: delete subvolume %s\n", path);
+	rc = cmd(0, 0, btrfs, "subvolume", "delete", path, NULL);
+	unmount_btrfs_top();
+	return rc == 0;
 }
 
 static char *

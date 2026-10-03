@@ -230,7 +230,7 @@ def wait_for_dev(path, dry_run, timeout=20):
         if Path(path).exists():
             return
         time.sleep(0.3)
-        raise InstallError("partition %s never showed up (disk busy?)" % path)
+    raise InstallError("partition %s never showed up (disk busy?)" % path)
 
 
 def release_disk(disk, dry_run):
