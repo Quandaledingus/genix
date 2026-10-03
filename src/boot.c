@@ -161,18 +161,23 @@ static int
 btrfs_subvol_exists(const char *name)
 {
 	const char *btrfs = btrfs_bin();
-	char *out;
+	char *out, *line, *save, *p;
+	int ok = 0;
 
 	if (!btrfs)
 		return 0;
 	out = cmd_out(btrfs, "subvolume", "list", "/", NULL);
 	if (!out)
 		return 0;
-	{
-		int ok = strstr(out, name) != NULL;
-		free(out);
-		return ok;
+	for (line = strtok_r(out, "\n", &save); line; line = strtok_r(NULL, "\n", &save)) {
+		p = strstr(line, " path ");
+		if (p && str_eq(p + 6, name)) {
+			ok = 1;
+			break;
+		}
 	}
+	free(out);
+	return ok;
 }
 
 static int
