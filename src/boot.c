@@ -246,7 +246,6 @@ delete_snapshot(int gen_id, const BootCfg *bc)
 	subvol_name(bc->subvol_prefix, gen_id, name, sizeof name);
 	if (!btrfs_subvol_exists(name))
 		return 1;
-	/* snapshots sit next to @ in the tree root, not under / */
 	if (!mount_btrfs_top()) {
 		printf("boot: could not mount btrfs tree root\n");
 		return 0;
